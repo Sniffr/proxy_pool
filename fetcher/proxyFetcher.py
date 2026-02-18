@@ -170,6 +170,26 @@ class ProxyFetcher(object):
         except Exception as e:
             print(e)
 
+    @staticmethod
+    def freeProxyTheSpeedX():
+        """
+        TheSpeedX GitHub Proxy List
+        https://github.com/TheSpeedX/SOCKS-List
+        """
+        urls = [
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt",
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt",
+        ]
+        for url in urls:
+            try:
+                r = WebRequest().get(url, timeout=10)
+                proxies = re.findall(r'\d+\.\d+\.\d+\.\d+:\d+', r.text)
+                for proxy in proxies:
+                    yield proxy
+            except Exception as e:
+                print("Error fetching from TheSpeedX: {}".format(e))
+
     # @staticmethod
     # def wallProxy01():
     #     """
