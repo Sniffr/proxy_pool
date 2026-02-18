@@ -78,6 +78,14 @@ class ConfigHandler(withMetaclass(Singleton)):
         return bool(os.getenv("PROXY_REGION", setting.PROXY_REGION))
 
     @LazyProperty
+    def proxyFetchInterval(self):
+        return int(os.getenv("PROXY_FETCH_INTERVAL", setting.PROXY_FETCH_INTERVAL))
+
+    @LazyProperty
+    def proxyCheckInterval(self):
+        return int(os.getenv("PROXY_CHECK_INTERVAL", setting.PROXY_CHECK_INTERVAL))
+
+    @LazyProperty
     def timezone(self):
         return os.getenv("TIMEZONE", setting.TIMEZONE)
 
