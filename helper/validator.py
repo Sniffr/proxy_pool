@@ -13,7 +13,7 @@
 __author__ = 'JHao'
 
 import re
-from requests import head
+from requests import head, get
 from util.six import withMetaclass
 from util.singleton import Singleton
 from handler.configHandler import ConfigHandler
@@ -80,7 +80,13 @@ def httpsTimeOutValidator(proxy):
         return False
 
 
-@ProxyValidator.addHttpValidator
-def customValidatorExample(proxy):
-    """自定义validator函数，校验代理是否可用, 返回True/False"""
-    return True
+@ProxyValidator.addHttpsValidator
+def googleValidator(proxy):
+    """验证代理是否可用于Google搜索"""
+    proxies = {"http": "http://{proxy}".format(proxy=proxy), "https": "https://{proxy}".format(proxy=proxy)}
+    try:
+        r = get("https://www.google.com/search?q=test",
+                headers=HEADER, proxies=proxies, timeout=conf.verifyTimeout, verify=False)
+        return True if r.status_code == 200 else False
+    except Exception as e:
+        return False
