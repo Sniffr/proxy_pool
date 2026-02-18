@@ -170,6 +170,63 @@ class ProxyFetcher(object):
         except Exception as e:
             print(e)
 
+    @staticmethod
+    def freeProxyTheSpeedX():
+        """
+        TheSpeedX GitHub Proxy List
+        https://github.com/TheSpeedX/SOCKS-List
+        """
+        urls = [
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/http.txt",
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks4.txt",
+            "https://raw.githubusercontent.com/TheSpeedX/SOCKS-List/master/socks5.txt",
+        ]
+        for url in urls:
+            try:
+                r = WebRequest().get(url, timeout=10)
+                proxies = re.findall(r'\d+\.\d+\.\d+\.\d+:\d+', r.text)
+                for proxy in proxies:
+                    yield proxy
+            except Exception as e:
+                print("Error fetching from TheSpeedX: {}".format(e))
+
+    @staticmethod
+    def freeProxyProxifly():
+        """
+        Proxifly GitHub Proxy List
+        https://github.com/proxifly/free-proxy-list
+        """
+        urls = [
+            "https://cdn.jsdelivr.net/gh/proxifly/free-proxy-list@main/proxies/protocols/http/data.txt",
+            "https://cdn.jsdelivr.net/gh/proxifly/free-proxy-list@main/proxies/protocols/https/data.txt",
+        ]
+        for url in urls:
+            try:
+                r = WebRequest().get(url, timeout=10)
+                proxies = re.findall(r'\d+\.\d+\.\d+\.\d+:\d+', r.text)
+                for proxy in proxies:
+                    yield proxy
+            except Exception as e:
+                print("Error fetching from Proxifly: {}".format(e))
+
+    @staticmethod
+    def freeProxyGeoNode():
+        """
+        GeoNode Proxy List API
+        https://proxylist.geonode.com/
+        """
+        url = "https://proxylist.geonode.com/api/proxy-list?protocols=https%2Chttp&limit=500&page=1&sort_by=lastChecked&sort_type=desc"
+        try:
+            r = WebRequest().get(url, timeout=10)
+            data = r.json
+            for item in data.get('data', []):
+                ip = item.get('ip', '')
+                port = item.get('port', '')
+                if ip and port:
+                    yield "{}:{}".format(ip, port)
+        except Exception as e:
+            print("Error fetching from GeoNode: {}".format(e))
+
     # @staticmethod
     # def wallProxy01():
     #     """
