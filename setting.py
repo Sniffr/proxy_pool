@@ -85,6 +85,10 @@ PROXY_REGION = True
 
 # ############# scheduler config #################
 
+# Interval between proxy fetch/check runs (in minutes)
+PROXY_FETCH_INTERVAL = 4
+PROXY_CHECK_INTERVAL = 2
+
 # Set the timezone for the scheduler forcely (optional)
 # If it is running on a VM, and
 #   "ValueError: Timezone offset does not match system offset"
